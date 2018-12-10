@@ -4,7 +4,7 @@ CFLAGS  = -std=c++11 -O2 -g -I/usr/local/cuda/targets/x86_64-linux/include/
 
 LDFLAGS = -lbenchmark
 
-all: thrust-foreach std-foreach thrust-generate std-generate
+all: thrust-foreach std-foreach thrust-generate std-generate thrust-transform std-transform
 
 
 thrust-foreach : thrust-foreach.o
@@ -32,8 +32,21 @@ std-generate: std-generate.o
 std-generate.o: std-generate.cc
 	$(CC) -c $(CFLAGS) $<
 	
+
+thrust-transform : thrust-transform.o
+	$(NVCC) -o $@ $^ $(LDFLAGS)
+
+thrust-transform.o: thrust-transform.cu
+	$(NVCC) -c $(CFLAGS) $<
 	
+std-transform: std-transform.o
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+std-transform.o: std-transform.cc
+	$(CC) -c $(CFLAGS) $<
+	
+
 .PHONY: clean
 
 clean:
-	rm *.o thrust-foreach std-foreach thrust-generate std-generate
+	rm *.o thrust-foreach std-foreach thrust-generate std-generate thrust-transform std-transform

@@ -51,7 +51,7 @@ static void thrust_generate_complex(benchmark::State& state) {
 	thrust::device_vector<cufftComplex> d_vec = h_vec;
 
 	for (auto _ : state) {
-		thrust::generate(thrust::device, d_vec.begin(), d_vec.end(), init_cufftComplex());
+		thrust::generate(d_vec.begin(), d_vec.end(), init_cufftComplex());
 	}
 
 	//  Save statistics
